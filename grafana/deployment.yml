@@ -13,6 +13,8 @@ spec:
   template:
     metadata:
       namespace: test
+      annotations:
+        prometheus.io/scrape: 'true'
       labels:
         app: grafana
     spec:
