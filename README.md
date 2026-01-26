@@ -23,6 +23,12 @@ To port forward and access Grafana type:
 kubectl port-forward service/grafana 3000:3000 --namespace=test
 ```
 
+The simply access the GrafanaUI from within a web browser:
+
+```
+http://localhost:3000
+```
+
 ## References
 
 - https://devopscube.com/setup-grafana-loki/
