@@ -29,6 +29,12 @@ Then simply access the GrafanaUI from within a web browser:
 http://localhost:3000
 ```
 
+To access the JaggerUI to see traces type:
+
+```bash
+kubectl port-forward svc/tempo-simplest-query-frontend 16686:16686
+```
+
 ## References
 
 - https://devopscube.com/setup-grafana-loki/
@@ -36,3 +42,4 @@ http://localhost:3000
 - https://devopscube.com/setup-grafana-kubernetes/
 - https://devopscube.com/node-exporter-kubernetes/
 - https://devopscube.com/setup-kube-state-metrics/
+- https://grafana.com/docs/tempo/latest/set-up-for-tracing/setup-tempo/deploy/kubernetes/operator/quickstart/
