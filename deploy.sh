@@ -7,3 +7,15 @@ kubectl apply -f ./grafana/
 kubectl apply -f ./kube-state-metrics/
 kubectl apply -f ./prometheus/
 kubectl apply -f ./node-exporter/
+
+# function deployDir() {
+# 	cd "$1"
+# 	./deploy.sh
+# 	cd ..
+# }
+#
+# # Deploy in order, wait for previous to complete before passing on to the next:
+#
+# deployDir ./loki
+# deployDir ./alloy
+# deployDir ./jaeger
