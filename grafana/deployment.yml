@@ -55,7 +55,13 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/grafana
               name: grafana-pv
+            - mountPath: /etc/grafana/provisioning/datasources/
+              name: grafana-config-volume
       volumes:
+        - name: grafana-config-volume
+          configMap:
+            defaultMode: 420
+            name: grafana-sources-conf
         - name: grafana-pv
           persistentVolumeClaim:
             claimName: grafana-pvc

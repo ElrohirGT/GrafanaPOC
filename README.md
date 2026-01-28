@@ -10,12 +10,7 @@
 First you need to start the pods, run the `./deploy.sh` script to initialize
 prometheus and grafana.
 
-To initialize `loki` and `alloy` run:
-
-```bash
-cd ./loki/ && helm install loki grafana/loki -n loki --create-namespace -f loki.yaml && cd ..
-cd ./alloy/ && helm install grafana-alloy grafana/alloy -n loki -f alloy.yml && cd ..
-```
+Read the script since some deployments need to be done manually.
 
 To port forward and access Grafana type:
 
@@ -43,3 +38,4 @@ kubectl port-forward svc/tempo-simplest-query-frontend 16686:16686
 - https://devopscube.com/node-exporter-kubernetes/
 - https://devopscube.com/setup-kube-state-metrics/
 - https://grafana.com/docs/tempo/latest/set-up-for-tracing/setup-tempo/deploy/kubernetes/operator/quickstart/
+- https://github.com/jaegertracing/jaeger-operator?tab=readme-ov-file#jager-v2-operator
