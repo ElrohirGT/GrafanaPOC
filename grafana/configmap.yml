@@ -19,3 +19,10 @@ data:
       - name: Jaeger
         type: jaeger
         url: "http://jaeger-inmemory-instance-collector.test:16686"
+      - name: Tempo
+        type: tempo
+        jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
+        secureJsonData:
+          httpHeaderValue1: "Tribal"
+        url: "http://tempo-simplest-query-frontend.test:16687"
