@@ -2,4 +2,4 @@
 
 set -exu
 
-helm install loki grafana/loki -n loki --create-namespace -f loki.yaml
+helm install loki grafana/loki -n monitoring --create-namespace -f loki.yaml

@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: test
+  namespace: monitoring
   labels:
     app: prometheus-server
 spec:
@@ -13,7 +13,7 @@ spec:
       app: prometheus-server
   template:
     metadata:
-      namespace: test
+      namespace: monitoring
       annotations:
         prometheus.io/scrape: 'true'
       labels:

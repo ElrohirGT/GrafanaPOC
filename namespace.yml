@@ -2,6 +2,6 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: test
+  name: monitoring
   labels:
-    name: test
+    name: monitoring

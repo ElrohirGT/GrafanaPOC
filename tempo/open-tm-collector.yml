@@ -3,7 +3,7 @@
 # kind: OpenTelemetryCollector
 # metadata:
 #   name: tempo-open-tm-collector
-#   namespace: test
+#   namespace: monitoring
 # spec:
 #   mode: deployment # O daemonset/sidecar según tu arquitectura
 #   config:

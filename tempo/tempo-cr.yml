@@ -3,11 +3,11 @@ apiVersion: tempo.grafana.com/v1alpha1
 kind: TempoStack
 metadata:
   name: simplest
-  namespace: test
+  namespace: monitoring
 spec:
   storage:
     secret:
-      name: minio-test
+      name: minio-secret
       type: s3
   storageSize: 1Gi
   resources:

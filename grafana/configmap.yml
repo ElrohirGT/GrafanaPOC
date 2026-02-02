@@ -5,7 +5,7 @@ metadata:
   name: grafana-sources-conf
   labels:
     name: grafana-sources-conf
-  namespace: test
+  namespace: monitoring
 
 data:
   datasources.yaml: |-
@@ -16,6 +16,10 @@ data:
       - name: Loki
         type: loki
         url: "http://loki-gateway.loki:80"
+        jsonData:
+          httpHeaderName1: "X-Scope-OrgID"
+        secureJsonData:
+          httpHeaderValue1: "Tribal"
       - name: Jaeger
         type: jaeger
         url: "http://jaeger-inmemory-instance-collector.test:16686"

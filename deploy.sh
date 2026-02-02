@@ -20,4 +20,4 @@ function deployDir() {
 # deployDir ./alloy
 # deployDir ./tempo/
 # # Not required
-deployDir ./jaeger
+# deployDir ./jaeger
