@@ -99,7 +99,7 @@ alloy:
       }
       otelcol.exporter.otlp "tempo_exporter" {
         client {
-          endpoint = "my-otlp-grpc-server:4317"
+          endpoint = "tempo-simplest-distributor:4317"
         }
       }
       otelcol.receiver.otlp "otlp_receiver" {

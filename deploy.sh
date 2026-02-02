@@ -16,8 +16,10 @@ function deployDir() {
 #
 # # Deploy in order, wait for previous to complete before passing on to the next:
 #
-# deployDir ./loki
-# deployDir ./alloy
-# deployDir ./tempo/
+deployDir ./loki
+sleep 20s
+deployDir ./alloy
+sleep 20s
+deployDir ./tempo/
 # # Not required
 # deployDir ./jaeger
