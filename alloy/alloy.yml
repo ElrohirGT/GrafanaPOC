@@ -46,12 +46,22 @@ alloy:
           replacement = "/var/log/pods/*$1/*.log"
         }
       }
+
+      local.file_match "applogs" {
+        path_targets = [{"__path__"= "/var/log/*/*.log"}]
+        sync_period = "5s"
+      }
+      loki.source.file "local_files" {
+        targets = local.file_match.applogs.targets
+        forward_to = [loki.write.default.receiver]
+      }
+
       loki.source.kubernetes "pods" {
         targets    = discovery.relabel.pods.output
         forward_to = [loki.process.process.receiver]
       }
       loki.process "process" {
-        forward_to = [loki.write.loki.receiver]
+        forward_to = [loki.write.default.receiver]
 
         stage.drop {
           older_than          = "1h"
@@ -70,34 +80,32 @@ alloy:
             }
           }
         }
-        stage.label_drop {
-          values = [ "service_name" ]
-        }
       }
-      loki.write "loki" {
+      loki.write "default" {
         endpoint {
           url = "http://loki-gateway/loki/api/v1/push"
+          tenant_id = "Tribal"
         }
       }
 
-      otelcol.processor.memory_limiter "tempo_memory_limiter" {
+      otelcol.processor.memory_limiter "all_1gb" {
         check_interval = "1s"
         limit          = "1GiB"
 
         output {
-          metrics = [otelcol.processor.batch.tempo_batcher.input]
-          logs    = [otelcol.processor.batch.tempo_batcher.input]
-          traces  = [otelcol.processor.batch.tempo_batcher.input]
+          metrics = [otelcol.processor.batch.all.input]
+          logs = [otelcol.processor.batch.all.input]
+          traces  = [otelcol.processor.batch.all.input]
         }
       }
-      otelcol.processor.batch "tempo_batcher" {
+      otelcol.processor.batch "all" {
         output {
-          metrics = [otelcol.exporter.otlp.tempo_exporter.input]
-          logs    = [otelcol.exporter.otlp.tempo_exporter.input]
-          traces  = [otelcol.exporter.otlp.tempo_exporter.input]
+          metrics = [otelcol.exporter.otlp.default.input]
+          logs = [otelcol.exporter.otlp.default.input]
+          traces  = [otelcol.exporter.otlp.default.input]
         }
       }
-      otelcol.exporter.otlp "tempo_exporter" {
+      otelcol.exporter.otlp "default" {
         client {
           endpoint = "tempo-simplest-distributor:4317"
         }
@@ -112,9 +120,9 @@ alloy:
         }
 
         output {
-          metrics = [otelcol.processor.batch.tempo_batcher.input]
-          logs    = [otelcol.processor.batch.tempo_batcher.input]
-          traces  = [otelcol.processor.batch.tempo_batcher.input]
+          metrics = [otelcol.processor.memory_limiter.all_1gb.input]
+          logs = [otelcol.processor.memory_limiter.all_1gb.input]
+          traces  = [otelcol.processor.memory_limiter.all_1gb.input]
         }
       }
   mounts:
