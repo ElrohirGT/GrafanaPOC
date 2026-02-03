@@ -21,5 +21,7 @@ sleep 20s
 deployDir ./alloy
 sleep 20s
 deployDir ./tempo/
+sleep 20s
+deployDir ./demo-app/
 # # Not required
 # deployDir ./jaeger

@@ -1,0 +1,26 @@
+---
+opentelemetry-collector:
+  config:
+    exporters:
+      otlphttp/example:
+        endpoint: http://grafana-alloy:4318
+
+    service:
+      pipelines:
+        traces:
+          exporters: [spanmetrics, otlphttp/example]
+        logs:
+          exporters: [spanmetrics, otlphttp/example]
+        metrics:
+          exporters: [spanmetrics, otlphttp/example]
+jaeger:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+grafana:
+  enabled: false
+
+opensearch:
+  enabled: false
