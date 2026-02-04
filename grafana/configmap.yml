@@ -23,7 +23,7 @@ data:
           httpHeaderValue1: Tribal
       - name: Tempo
         type: tempo
-        url: http://tempo-simplest-query-frontend.monitoring:16687
+        url: http://tempo:16687
         jsonData:
           httpHeaderName1: X-Scope-OrgID
         secureJsonData:

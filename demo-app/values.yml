@@ -5,14 +5,17 @@ opentelemetry-collector:
       otlphttp/example:
         endpoint: http://grafana-alloy:4318
 
+      otlp/tempo:
+        endpoint: tempo:4317
+
     service:
       pipelines:
         traces:
-          exporters: [otlphttp/example]
+          exporters: [spanmetrics, otlphttp/example, otlp/tempo]
         logs:
-          exporters: [otlphttp/example]
+          exporters: [otlphttp/example, otlp/tempo]
         metrics:
-          exporters: [otlphttp/example]
+          exporters: [otlphttp/example, otlp/tempo]
 jaeger:
   enabled: false
 
