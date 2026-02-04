@@ -8,11 +8,11 @@ opentelemetry-collector:
     service:
       pipelines:
         traces:
-          exporters: [spanmetrics, otlphttp/example]
+          exporters: [otlphttp/example]
         logs:
-          exporters: [spanmetrics, otlphttp/example]
+          exporters: [otlphttp/example]
         metrics:
-          exporters: [spanmetrics, otlphttp/example]
+          exporters: [otlphttp/example]
 jaeger:
   enabled: false
 
