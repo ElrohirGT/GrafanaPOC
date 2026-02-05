@@ -2,15 +2,18 @@
 
 ## Prerequisites:
 
-- Kubernetes Cluster (Kind or another).
+- Kubernetes Cluster: k3d recommended but you can also use another.
 - Helm
 
 ## Running
 
-First you need to start the pods, run the `./deploy.sh` script to initialize
-prometheus and grafana.
+This cluster is heavy, so I recommend using [k3d](https://k3d.io/v5.6.3/). First
+you need to start the pods, run the `./deploy.sh` script to initialize all
+services. It's likely some deployments will fail due to missing dependencies,
+please restart the deployments from within that folder once it does! Normally
+just one restart is required!
 
-Read the script since some deployments need to be done manually.
+It's recommended that you read the `./deploy.sh` script!
 
 To port forward and access Grafana type:
 
@@ -24,10 +27,28 @@ Then simply access the GrafanaUI from within a web browser:
 http://localhost:3000
 ```
 
-To access the JaggerUI to see traces type:
+To port forward the dice-app type:
 
 ```bash
-kubectl port-forward svc/tempo-simplest-query-frontend 16686:16686
+kubectl port-forward service/dice-service 8081:8080 --namespace=dice-app
+```
+
+Then you can make get requests like so:
+
+```bash
+curl http://localhost:8081/rolldice/Jose
+```
+
+## More complex example
+
+If you need a more complex example, you can deploy the preconfigured `demo-app`.
+This is the opentelemetry demo adapted to use the LGTM stack on this repo.
+
+Simply run:
+
+```bash
+# From the repo root
+cd ./demo-app/ && ./deploy.sh
 ```
 
 ## References
