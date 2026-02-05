@@ -50,6 +50,24 @@ func rolldice(w http.ResponseWriter, r *http.Request) {
 	span.SetAttributes(rollValueAttr)
 	rollCnt.Add(ctx, 1, metric.WithAttributes(rollValueAttr))
 
+	logger.InfoContext(ctx, "Getting first user...")
+	err := GetUser(ctx)
+	if err != nil {
+		logger.ErrorContext(ctx, "Failed to get user!", "error", err)
+		span.RecordError(err)
+		http.Error(w, "Failed to get user! "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	logger.InfoContext(ctx, "Getting second user...")
+	err = GetUser(ctx)
+	if err != nil {
+		logger.ErrorContext(ctx, "Failed to get user!", "error", err)
+		span.RecordError(err)
+		http.Error(w, "Failed to get user! "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	resp := strconv.Itoa(roll) + "\n"
 	if _, err := io.WriteString(w, resp); err != nil {
 		logger.ErrorContext(ctx, "Write failed", "error", err)
