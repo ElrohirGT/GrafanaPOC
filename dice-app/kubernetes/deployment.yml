@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dice-deployment
+  namespace: dice-app
+  labels:
+    app: dice
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9100'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dice
+  template:
+    metadata:
+      namespace: dice-app
+      labels:
+        app: dice
+    spec:
+      containers:
+        - name: dice
+          image: 'fagdtw/dice-app'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              # value: http://tempo.monitoring:4318
+              value: http://tempo.monitoring.svc.cluster.local:4318/v1/traces
+            - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+              value: http://grafana-alloy.monitoring:4318/v1/metrics
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=dice,service.version=0.1.0
