@@ -16,6 +16,7 @@ data:
         url: http://prometheus.monitoring:8080
       - name: Loki
         type: loki
+        uid: Loki
         url: http://loki-gateway.monitoring:80
         jsonData:
           httpHeaderName1: X-Scope-OrgID
@@ -26,19 +27,27 @@ data:
         url: http://tempo:3200
         jsonData:
           httpHeaderName1: X-Scope-OrgID
-          tracesToLogs:
-            datasourceUid: 'Loki'
-            tags: ['job', 'instance', 'pod', 'namespace']
-            mappedTags: [{ key: 'service.name', value: 'service' }]
-            mapTagNamesEnabled: false
-            spanStartTimeShift: '1h'
+          tracesToLogsV2:
+            datasourceUid: Loki
+            # tags: [{key: 'job'}, {key: 'instance'}, {key: 'pod'}, {key: 'namespace'}, { key: 'service.name', value: 'service_name' }]
+            tags:
+              - key: service.name
+                value: service_name
+              - key: namespace
+              - key: trace_id
+                value: TraceID
+            spanStartTimeShift: '-1h'
             spanEndTimeShift: '1h'
-            filterByTraceID: false
+            filterByTraceID: true
             filterBySpanID: false
+            # customQuery: true
+            # query: '{service_name="$${__tags.app}"} |= "$${__trace.traceId}"'
+            # query: '{service_name="$${__tags.service_name}"} | json | logfmt | drop __error__, __error_details__ | TraceID="__trace.traceId"'
+            # query: '{service_name="$${__tags.service_name}"} | label_format log_line_contains_trace_id=`{{ contains "$${__trace.traceId}" __line__  }}` | log_line_contains_trace_id="true" or TraceID="$${__trace.traceId}"'
           lokiSearch:
             datasourceUid: 'Loki'
           serviceMap:
-            datasourceUid: 'tempo'
+            datasourceUid: 'Prometheus'
           nodeGraph:
             enabled: true
 

@@ -22,5 +22,5 @@ sleep 20s
 deployDir ./loki
 sleep 20s
 deployDir ./tempo/
-sleep 20s
-deployDir ./demo-app/
+# sleep 20s
+# deployDir ./demo-app/
