@@ -23,8 +23,24 @@ data:
           httpHeaderValue1: Tribal
       - name: Tempo
         type: tempo
-        url: http://tempo:16687
+        url: http://tempo:3200
         jsonData:
           httpHeaderName1: X-Scope-OrgID
+          tracesToLogs:
+            datasourceUid: 'Loki'
+            tags: ['job', 'instance', 'pod', 'namespace']
+            mappedTags: [{ key: 'service.name', value: 'service' }]
+            mapTagNamesEnabled: false
+            spanStartTimeShift: '1h'
+            spanEndTimeShift: '1h'
+            filterByTraceID: false
+            filterBySpanID: false
+          lokiSearch:
+            datasourceUid: 'Loki'
+          serviceMap:
+            datasourceUid: 'tempo'
+          nodeGraph:
+            enabled: true
+
         secureJsonData:
           httpHeaderValue1: Tribal

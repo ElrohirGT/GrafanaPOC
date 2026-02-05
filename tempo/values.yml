@@ -1,3 +1,6 @@
 ---
 tempo:
-  multitenancyEnabled: true
+  multitenancyEnabled: false
+
+tempoQuery:
+  enabled: true
