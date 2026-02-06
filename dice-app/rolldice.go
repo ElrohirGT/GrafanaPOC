@@ -59,12 +59,12 @@ func rolldice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	logger.InfoContext(ctx, "Getting second user...")
-	err = GetUser(ctx)
+	logger.InfoContext(ctx, "Posting a custom obj...")
+	err = PostObj(ctx)
 	if err != nil {
-		logger.ErrorContext(ctx, "Failed to get user!", "error", err)
+		logger.ErrorContext(ctx, "Failed to post obj!", "error", err)
 		span.RecordError(err)
-		http.Error(w, "Failed to get user! "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to post obj! "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 

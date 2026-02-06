@@ -29,7 +29,8 @@ func GetUser(ctx context.Context) error {
 	resp, err := http.DefaultClient.Do(req)
 	logger.InfoContext(ctx, "Service responded!")
 	if err != nil {
-		span.AddEvent("Integration `get-user` failed!", trace.WithAttributes(
+		span.AddEvent("Integration `get-user`", trace.WithAttributes(
+			attribute.Bool("success", false),
 			attribute.String("reason", err.Error()),
 		))
 		return err
@@ -37,20 +38,23 @@ func GetUser(ctx context.Context) error {
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		span.AddEvent("Integration `get-user` failed!", trace.WithAttributes(
+		span.AddEvent("Integration `get-user`", trace.WithAttributes(
+			attribute.Bool("success", false),
 			attribute.String("reason", err.Error()),
 		))
 		return err
 	}
 	if rand.Float32() < 0.1 {
-		span.AddEvent("Integration `get-user` failed!", trace.WithAttributes(
+		span.AddEvent("Integration `get-user`", trace.WithAttributes(
+			attribute.Bool("success", false),
 			attribute.String("reason", ErrSimulatedError.Error()),
 		))
 		return ErrSimulatedError
 	}
 
-	span.AddEvent("Integration `get-user` success!", trace.WithAttributes(
-		attribute.String("body", string(body)),
+	span.AddEvent("Integration `get-user`", trace.WithAttributes(
+		attribute.Bool("success", true),
+		attribute.String("response", string(body)),
 	))
 
 	return nil
