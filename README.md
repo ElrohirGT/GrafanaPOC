@@ -21,7 +21,8 @@ It's likely some deployments will fail due to missing dependencies. If this
 happens, restart the failed deployment manually and continue the deployments of
 the directories in the order specified by `./deploy.sh`.
 
-> [!IMPORTANT] It's recommended that you read the `./deploy.sh` script!
+> [!IMPORTANT]
+> It's recommended that you read the `./deploy.sh` script!
 
 To port forward and access Grafana type:
 
