@@ -15,16 +15,19 @@ k3d cluster create
 
 This cluster is heavy, so I recommend using [k3d](https://k3d.io/v5.6.3/). First
 you need to start the pods, run the `./deploy.sh` script to initialize all
-services. It's likely some deployments will fail due to missing dependencies,
-please restart the deployments from within that folder once it does! Normally
-just one restart is required!
+services.
 
-It's recommended that you read the `./deploy.sh` script!
+It's likely some deployments will fail due to missing dependencies. If this
+happens, restart the failed deployment manually and continue the deployments of
+the directories in the order specified by `./deploy.sh`.
+
+> [!IMPORTANT]
+> It's recommended that you read the `./deploy.sh` script!
 
 To port forward and access Grafana type:
 
 ```bash
-kubectl port-forward service/grafana 3000:3000 --namespace=test
+kubectl port-forward service/grafana 3000:3000 --namespace=monitoring
 ```
 
 Then simply access the GrafanaUI from within a web browser:
@@ -32,6 +35,8 @@ Then simply access the GrafanaUI from within a web browser:
 ```
 http://localhost:3000
 ```
+
+The default grafana username and password is `admin`.
 
 To port forward the dice-app type:
 
