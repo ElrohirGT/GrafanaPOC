@@ -5,6 +5,12 @@
 - Kubernetes Cluster: k3d recommended but you can also use another.
 - Helm
 
+If you user k3d, to create the cluster simply run:
+
+```bash
+k3d cluster create
+```
+
 ## Running
 
 This cluster is heavy, so I recommend using [k3d](https://k3d.io/v5.6.3/). First
