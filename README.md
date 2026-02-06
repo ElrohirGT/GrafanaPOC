@@ -5,7 +5,7 @@
 - Kubernetes Cluster: k3d recommended but you can also use another.
 - Helm
 
-If you user k3d, to create the cluster simply run:
+If you installed k3d, to create the cluster simply run:
 
 ```bash
 k3d cluster create
@@ -21,8 +21,7 @@ It's likely some deployments will fail due to missing dependencies. If this
 happens, restart the failed deployment manually and continue the deployments of
 the directories in the order specified by `./deploy.sh`.
 
-> [!IMPORTANT]
-> It's recommended that you read the `./deploy.sh` script!
+> [!IMPORTANT] It's recommended that you read the `./deploy.sh` script!
 
 To port forward and access Grafana type:
 
