@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dice-deployment
+  namespace: ebpf-app
+  labels:
+    app: ebpf-dice
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9100'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ebpf-dice
+  template:
+    metadata:
+      namespace: ebpf-app
+      labels:
+        app: ebpf-dice
+    spec:
+      shareProcessNamespace: true
+      containers:
+        - name: ebpf-dice
+          image: 'fagdtw/ebpf-dice-app'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              # value: http://tempo.monitoring:4318
+              value: http://tempo.monitoring.svc.cluster.local:4318/v1/traces
+            - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+              value: http://grafana-alloy.monitoring:4318/v1/metrics
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: service.name=dice,service.version=0.1.0
+        - name: autoinstrumentation-go
+          image: otel/autoinstrumentation-go
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: OTEL_GO_AUTO_TARGET_EXE
+              value: /dice
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://tempo.monitoring.svc.cluster.local:4318"
+            - name: OTEL_SERVICE_NAME
+              value: "ebpf-dice"
+          securityContext:
+            runAsUser: 0
+            privileged: true
