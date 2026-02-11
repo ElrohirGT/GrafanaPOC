@@ -1,0 +1,11 @@
+---
+rootUser: "admin"
+rootPassword: "password123"
+replicas: 2
+
+persistance:
+  size: 2Gbi
+
+resources:
+  requests:
+    memory: 512Mi

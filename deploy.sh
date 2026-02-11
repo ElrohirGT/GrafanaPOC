@@ -18,6 +18,7 @@ deployDir ./node-exporter/
 # Deploy in order, wait for previous to complete before passing on to the next:
 
 sleep 20s
+deployDir ./minio/
 deployDir ./alloy
 sleep 20s
 deployDir ./loki
