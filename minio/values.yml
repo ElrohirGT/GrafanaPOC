@@ -9,3 +9,8 @@ persistance:
 resources:
   requests:
     memory: 512Mi
+
+users:
+  - accessKey: accessKey
+    secretKey: secretKey
+    policy: none

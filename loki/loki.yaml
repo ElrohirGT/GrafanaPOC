@@ -17,18 +17,22 @@ loki:
     volume_enabled: true
   ruler:
     enable_api: true
+  storage_config:
+    aws:
+      s3: http://admin:password123@minio.monitoring.svg.cluster.local:9000
+      s3forcepathstyle: true
   storage:
     bucketNames:
-      chunks: chunks
-      ruler: ruler
-      admin: admin
+      chunks: loki-chunks
+      ruler: loki-ruler
+      admin: loki-admin
     type: s3
     s3:
-      endpoint: "http://minio.monitoring.svc.cluster.local:9000"
+      endpoint: "http://admin:password123@minio.monitoring.svc.cluster.local:9000"
     object_storage:
       type: s3
       s3:
-        endpoint: "http://minio.monitoring.svc.cluster.local:9000"
+        endpoint: "http://admin:password123@minio.monitoring.svc.cluster.local:9000"
 
 deploymentMode: SingleBinary
 
