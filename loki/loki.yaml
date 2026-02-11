@@ -17,13 +17,23 @@ loki:
     volume_enabled: true
   ruler:
     enable_api: true
-
-minio:
-  enabled: false
-  address: "http://minio.monitoring.svc.cluster.local:9000"
-
+  storage:
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+    type: s3
+    s3:
+      endpoint: "http://minio.monitoring.svc.cluster.local:9000"
+    object_storage:
+      type: s3
+      s3:
+        endpoint: "http://minio.monitoring.svc.cluster.local:9000"
 
 deploymentMode: SingleBinary
+
+minio:  # Minio subchart...
+  enabled: false
 
 singleBinary:
   replicas: 1
