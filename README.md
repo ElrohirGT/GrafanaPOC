@@ -71,3 +71,4 @@ cd ./demo-app/ && ./deploy.sh
 - https://devopscube.com/setup-kube-state-metrics/
 - https://grafana.com/docs/tempo/latest/set-up-for-tracing/setup-tempo/deploy/kubernetes/operator/quickstart/
 - https://github.com/jaegertracing/jaeger-operator?tab=readme-ov-file#jager-v2-operator
+- https://nsalexamy.github.io/service-foundry/pages/documents/o11y-foundry/minio-object-storage-for-loki/

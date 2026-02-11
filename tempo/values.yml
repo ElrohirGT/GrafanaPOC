@@ -3,6 +3,15 @@ tempo:
   multitenancyEnabled: false
   metricsGenerator:
     enabled: true
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: tempo-traces
+        endpoint: minio.monitoring.svc.cluster.local:9000
+        access_key: admin
+        secret_key: password123
+        insecure: true
 
 tempoQuery:
   enabled: true

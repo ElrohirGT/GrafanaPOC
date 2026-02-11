@@ -15,6 +15,7 @@ mc alias set minio-local http://localhost:9000 admin password123
 mc mb minio-local/loki-chunks
 mc mb minio-local/loki-ruler
 mc mb minio-local/loki-admin
+mc mb minio-local/tempo-traces
 
 echo "Checkout buckets..."
 mc ls minio-local
