@@ -1,5 +1,6 @@
 ---
 multitenancyEnabled: false
+streamOverHTTPEnabled: true
 
 storage:
   trace:
@@ -38,3 +39,5 @@ minio:
 
 gateway:
   enabled: true
+  service:
+    type: ClusterIP

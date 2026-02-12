@@ -24,7 +24,7 @@ data:
           httpHeaderValue1: Tribal
       - name: Tempo
         type: tempo
-        url: http://tempo:3200
+        url: http://tempo-gateway.monitoring:80
         jsonData:
           httpHeaderName1: X-Scope-OrgID
           tracesToLogsV2:
