@@ -2,6 +2,13 @@
 multitenancyEnabled: false
 streamOverHTTPEnabled: true
 
+traces:
+  otlp:
+    http:
+      enabled: true
+    grpc:
+      enabled: true
+
 storage:
   trace:
     backend: s3
@@ -13,7 +20,9 @@ storage:
       insecure: true
 
 ingester:
-  replicas: 1
+  replicas: 2  # 2 is the minimum! It doesn't work with 1
+  zoneAwareReplication:
+    enabled: false
 
 metricsGenerator:
   enabled: true
@@ -21,6 +30,11 @@ metricsGenerator:
 
 distributor:
   replicas: 1
+  config:
+    log_received_spans:
+      enabled: true
+    log_discarded_spans:
+      enabled: true
 
 compactor:
   replicas: 1
