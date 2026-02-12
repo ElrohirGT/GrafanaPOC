@@ -3,7 +3,7 @@ alloy:
   configMap:
     content: |-
       logging {
-        level = "debug"
+        level = "info"
         format = "logfmt"
       }
 
@@ -155,8 +155,8 @@ alloy:
       }
 
       otelcol.processor.memory_limiter "all_1gb" {
-        check_interval = "1s"
-        limit          = "1GiB"
+        check_interval = "5s"
+        limit          = "90MiB"
 
         output {
           metrics = [otelcol.processor.batch.all.input]
@@ -165,6 +165,8 @@ alloy:
         }
       }
       otelcol.processor.batch "all" {
+        timeout = "200ms"
+
         output {
           // metrics = [otelcol.exporter.otlp.default.input]
           logs = [otelcol.exporter.loki.default.input]
@@ -173,7 +175,10 @@ alloy:
       }
       otelcol.exporter.otlp "tempo" {
         client {
-          endpoint = "tempo-gateway.monitoring.svc.cluster.local:80"
+          endpoint = "tempo-gateway.monitoring.svc.cluster.local:4317"
+          tls {
+              insecure = true
+          }
         }
       }
       otelcol.exporter.loki "default" {
@@ -194,9 +199,22 @@ alloy:
           traces  = [otelcol.processor.memory_limiter.all_1gb.input]
         }
       }
+      livedebugging {
+        enabled = true
+      }
   mounts:
     varlog: true
     dockercontainers: true
+
+  extraPorts:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      protocol: TCP
 
   resources:
     limits:
