@@ -38,16 +38,16 @@ func rolldice(w http.ResponseWriter, r *http.Request) {
 
 	roll := 1 + rand.Intn(6)
 
-	var msg string
-	if player := r.PathValue("player"); player != "" {
-		msg = player + " is rolling the dice"
-	} else {
-		msg = "Anonymous player is rolling the dice"
+	playerName := r.PathValue("player")
+	if playerName == "" {
+		playerName = "Anonymous"
 	}
+	msg := playerName + " is rolling the dice"
 	logger.InfoContext(ctx, msg, "result", roll)
 
 	rollValueAttr := attribute.Int("roll.value", roll)
-	span.SetAttributes(rollValueAttr)
+	userAttr := attribute.String("user.name", playerName)
+	span.SetAttributes(rollValueAttr, userAttr)
 	rollCnt.Add(ctx, 1, metric.WithAttributes(rollValueAttr))
 
 	logger.InfoContext(ctx, "Getting first user...")
