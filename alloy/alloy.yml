@@ -168,7 +168,7 @@ alloy:
         timeout = "200ms"
 
         output {
-          // metrics = [otelcol.exporter.otlp.default.input]
+          metrics = [otelcol.exporter.prometheus.default.input]
           logs = [otelcol.exporter.loki.default.input]
           traces  = [otelcol.exporter.otlp.tempo.input]
         }
@@ -180,6 +180,9 @@ alloy:
               insecure = true
           }
         }
+      }
+      otelcol.exporter.prometheus "default" {
+        forward_to = [prometheus.remote_write.default.receiver]
       }
       otelcol.exporter.loki "default" {
         forward_to = [loki.write.default.receiver]
@@ -197,6 +200,12 @@ alloy:
           metrics = [otelcol.processor.memory_limiter.all_1gb.input]
           logs = [otelcol.processor.memory_limiter.all_1gb.input]
           traces  = [otelcol.processor.memory_limiter.all_1gb.input]
+        }
+      }
+
+      prometheus.remote_write "default" {
+        endpoint {
+          url = "http://prometheus.monitoring.svc.cluster.local:9009/api/v1/push"
         }
       }
       livedebugging {
