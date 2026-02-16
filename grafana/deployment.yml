@@ -6,6 +6,15 @@ metadata:
     app: grafana
   name: grafana
   namespace: monitoring
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9100'
+    profiles.grafana.com/cpu.scrape: 'true'
+    profiles.grafana.com/cpu.port: '8080'
+    profiles.grafana.com/memory.scrape: 'true'
+    profiles.grafana.com/memory.port: '8080'
+    profiles.grafana.com/goroutine.scrape: 'true'
+    profiles.grafana.com/goroutine.port: '8080'
 spec:
   selector:
     matchLabels:
@@ -26,6 +35,19 @@ spec:
         - name: grafana
           image: grafana/grafana:latest
           imagePullPolicy: IfNotPresent
+          env:
+            - name: GF_PLUGINS_PREINSTALL_SYNC
+              value: grafana-pyroscope-app
+            # - name: GF_AUTH_ANONYMOUS_ENABLED
+            #   value: 'true'
+            # - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+            #   value: Admin
+            # - name: GF_DIAGNOSTICS_PROFILING_ENABLED
+            #   value: 'true'
+            # - name: GF_DIAGNOSTICS_PROFILING_ADDR
+            #   value: 0.0.0.0
+            # - name: GF_DIAGNOSTICS_PROFILING_PORT
+            #   value: 8080
           ports:
             - containerPort: 3000
               name: http-grafana

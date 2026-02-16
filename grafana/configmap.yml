@@ -11,6 +11,9 @@ data:
   datasources.yaml: |-
     apiVersion: 1
     datasources:
+      - name: Pyroscope
+        type: grafana-pyroscope-datasource
+        url: http://pyroscope.monitoring.svc.cluster.local:4040
       - name: Prometheus
         type: prometheus
         url: http://prometheus.monitoring:8080

@@ -9,6 +9,13 @@ metadata:
   annotations:
     prometheus.io/scrape: 'true'
     prometheus.io/port: '9100'
+
+    profiles.grafana.com/cpu.scrape: 'true'
+    profiles.grafana.com/cpu.port: '8080'
+    profiles.grafana.com/memory.scrape: 'true'
+    profiles.grafana.com/memory.port: '8080'
+    profiles.grafana.com/goroutine.scrape: 'true'
+    profiles.grafana.com/goroutine.port: '8080'
 spec:
   replicas: 1
   selector:
@@ -27,6 +34,10 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: APP_NAME
+              value: dice-app/dice
+            - name: PYROSCOPE_HOST
+              value: http://pyroscope.monitoring.svc.cluster.local:4040
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://grafana-alloy.monitoring.svc.cluster.local:4318
             # - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT

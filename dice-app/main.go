@@ -34,6 +34,8 @@ func run() error {
 		err = errors.Join(err, otelShutdown(context.Background()))
 	}()
 
+	setupPyroscope()
+
 	// Start HTTP server.
 	srv := &http.Server{
 		Addr:         ":8080",
