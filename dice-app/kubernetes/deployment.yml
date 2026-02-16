@@ -37,7 +37,7 @@ spec:
             - name: APP_NAME
               value: dice-app/dice
             - name: PYROSCOPE_HOST
-              value: http://pyroscope.monitoring.svc.cluster.local:4040
+              value: http://grafana-alloy.monitoring.svc.cluster.local:4040
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
               value: http://grafana-alloy.monitoring.svc.cluster.local:4318
             # - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT

@@ -25,6 +25,8 @@ deployDir ./loki
 sleep 20s
 deployDir ./tempo/
 sleep 20s
+deployDir ./pyroscope/
+sleep 20s
 deployDir ./dice-app/
 # sleep 20s
 # deployDir ./demo-app/
