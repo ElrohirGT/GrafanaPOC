@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus
+  name: prometheus-server
   namespace: monitoring
   labels:
     app: prometheus-server
@@ -26,6 +26,7 @@ spec:
             - "--storage.tsdb.retention.time=12h"
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus/"
+            - "--web.enable-remote-write-receiver"
           ports:
             - containerPort: 9090
           resources:
