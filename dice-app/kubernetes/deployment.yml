@@ -48,3 +48,7 @@ spec:
             #   value: http://grafana-alloy.monitoring:12345/v1/metrics
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.name=dice,service.version=0.1.0
+          resources:
+            limits:
+              memory: "75Mi"
+              cpu: "500m"
