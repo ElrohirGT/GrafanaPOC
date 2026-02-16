@@ -47,12 +47,28 @@ data:
             # query: '{service_name="$${__tags.app}"} |= "$${__trace.traceId}"'
             # query: '{service_name="$${__tags.service_name}"} | json | logfmt | drop __error__, __error_details__ | TraceID="__trace.traceId"'
             # query: '{service_name="$${__tags.service_name}"} | label_format log_line_contains_trace_id=`{{ contains "$${__trace.traceId}" __line__  }}` | log_line_contains_trace_id="true" or TraceID="$${__trace.traceId}"'
+          tracesToMetrics:
+            datasourceUid: 'Prometheus'
+            spanStartTimeShift: '-1h'
+            spanEndTimeShift: '1h'
+            tags: [{ key: 'service.name', value: 'service' }, { key: 'job' }]
+            # queries:
+            #   - name: 'Sample query'
+            #     query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+          tracesToProfiles:
+            datasourceUid: 'Pyroscope'
+            tags: ['job', 'instance', 'pod', 'namespace']
+            profileTypeId: 'process_cpu:cpu:nanoseconds:cpu:nanoseconds'
+            # customQuery: true
+            # query: 'method="$${__span.tags.method}"'
           lokiSearch:
             datasourceUid: 'Loki'
           serviceMap:
             datasourceUid: 'Prometheus'
           nodeGraph:
             enabled: true
+          streamingEnabled:
+            search: true
 
         secureJsonData:
           httpHeaderValue1: Tribal

@@ -4,7 +4,9 @@ import (
 	"os"
 	"runtime"
 
+	otelpyroscope "github.com/grafana/otel-profiling-go"
 	"github.com/grafana/pyroscope-go"
+	"go.opentelemetry.io/otel"
 )
 
 func setupPyroscope() {
@@ -12,6 +14,9 @@ func setupPyroscope() {
 	// Read the explanation below for how to set these rates:
 	runtime.SetMutexProfileFraction(5)
 	runtime.SetBlockProfileRate(5)
+
+	// Wrap it with otelpyroscope tracer provider.
+	otel.SetTracerProvider(otelpyroscope.NewTracerProvider(otel.GetTracerProvider()))
 
 	pyroscope.Start(pyroscope.Config{
 		// ApplicationName: "dice.golang.app",

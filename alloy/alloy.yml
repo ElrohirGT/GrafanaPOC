@@ -170,7 +170,10 @@ alloy:
         output {
           metrics = [otelcol.exporter.prometheus.default.input]
           logs = [otelcol.exporter.loki.default.input]
-          traces  = [otelcol.exporter.otlp.tempo.input]
+          traces  = [
+            otelcol.exporter.otlp.tempo.input,
+            otelcol.connector.servicegraph.default.input,
+          ]
         }
       }
       otelcol.exporter.otlp "tempo" {
@@ -200,6 +203,13 @@ alloy:
           metrics = [otelcol.processor.memory_limiter.all_1gb.input]
           logs = [otelcol.processor.memory_limiter.all_1gb.input]
           traces  = [otelcol.processor.memory_limiter.all_1gb.input]
+        }
+      }
+
+      otelcol.connector.servicegraph "default" {
+        dimensions = ["http.method", "http.target"]
+        output {
+          metrics = [otelcol.exporter.prometheus.default.input]
         }
       }
 
