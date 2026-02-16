@@ -16,17 +16,19 @@ import (
 const name = "go.opentelemetry.io/contrib/examples/dice"
 
 var (
-	tracer  = otel.Tracer(name)
-	meter   = otel.Meter(name)
-	logger  = otelslog.NewLogger(name)
-	rollCnt metric.Int64Counter
+	tracer     = otel.Tracer(name)
+	meter      = otel.Meter(name)
+	logger     = otelslog.NewLogger(name)
+	rollByUser metric.Int64Gauge
 )
 
 func init() {
 	var err error
-	rollCnt, err = meter.Int64Counter("dice.rolls",
-		metric.WithDescription("The number of rolls by roll value"),
-		metric.WithUnit("{roll}"))
+
+	rollByUser, err = meter.Int64Gauge("dice.rolls.byUser",
+		metric.WithDescription("The rolls each user got"),
+		metric.WithUnit("{roll}"),
+	)
 	if err != nil {
 		panic(err)
 	}
@@ -37,18 +39,17 @@ func rolldice(w http.ResponseWriter, r *http.Request) {
 	defer span.End()
 
 	roll := 1 + rand.Intn(6)
+	rollValueAttr := attribute.Int("roll.value", roll)
 
 	playerName := r.PathValue("player")
 	if playerName == "" {
 		playerName = "Anonymous"
 	}
+	userAttr := attribute.String("user.name", playerName)
 	msg := playerName + " is rolling the dice"
 	logger.InfoContext(ctx, msg, "result", roll)
 
-	rollValueAttr := attribute.Int("roll.value", roll)
-	userAttr := attribute.String("user.name", playerName)
 	span.SetAttributes(rollValueAttr, userAttr)
-	rollCnt.Add(ctx, 1, metric.WithAttributes(rollValueAttr))
 
 	logger.InfoContext(ctx, "Getting first user...")
 	err := GetUser(ctx)
@@ -68,6 +69,7 @@ func rolldice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	rollByUser.Record(ctx, int64(roll), metric.WithAttributes(userAttr))
 	resp := strconv.Itoa(roll) + "\n"
 	if _, err := io.WriteString(w, resp); err != nil {
 		logger.ErrorContext(ctx, "Write failed", "error", err)
