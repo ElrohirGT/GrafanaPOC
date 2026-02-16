@@ -27,7 +27,8 @@ func setupPyroscope() {
 		ServerAddress: os.Getenv("PYROSCOPE_HOST"),
 
 		// you can disable logging by setting this to nil
-		Logger: pyroscope.StandardLogger,
+		// Logger: pyroscope.StandardLogger,
+		Logger: nil,
 
 		// you can provide static tags via a map:
 		Tags: map[string]string{"hostname": os.Getenv("HOSTNAME")},
