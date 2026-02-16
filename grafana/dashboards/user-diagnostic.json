@@ -1,0 +1,280 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 0,
+	"links": [],
+	"panels": [
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "PBFA97CFB590B2093"
+			},
+			"description": "A sample from the rolls the user got!",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisBorderShow": false,
+						"axisCenteredZero": false,
+						"axisColorMode": "text",
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"barWidthFactor": 0.6,
+						"drawStyle": "points",
+						"fillOpacity": 0,
+						"gradientMode": "none",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"insertNulls": false,
+						"lineInterpolation": "stepBefore",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"showValues": false,
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 0,
+				"y": 0
+			},
+			"id": 1,
+			"options": {
+				"legend": {
+					"calcs": [],
+					"displayMode": "list",
+					"placement": "bottom",
+					"showLegend": true
+				},
+				"tooltip": {
+					"hideZeros": false,
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "12.3.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "PBFA97CFB590B2093"
+					},
+					"editorMode": "code",
+					"expr": "dice_rolls_byUser{user_name=\"$username\"}",
+					"instant": true,
+					"legendFormat": "__auto",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Dice Rolls",
+			"type": "timeseries"
+		},
+		{
+			"datasource": {
+				"type": "tempo",
+				"uid": "P214B5B846CF3925F"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"footer": {
+							"reducers": []
+						},
+						"inspect": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": 0
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 12,
+				"x": 12,
+				"y": 0
+			},
+			"id": 3,
+			"options": {
+				"cellHeight": "sm",
+				"showHeader": true
+			},
+			"pluginVersion": "12.3.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "tempo",
+						"uid": "P214B5B846CF3925F"
+					},
+					"filters": [
+						{
+							"id": "d09c86fb",
+							"isCustomValue": false,
+							"operator": "=",
+							"scope": "span",
+							"tag": "user.name",
+							"value": ["$username"],
+							"valueType": "string"
+						}
+					],
+					"limit": 20,
+					"metricsQueryType": "range",
+					"query": "{span.user.name=\"$username\"}",
+					"queryType": "traceql",
+					"refId": "A",
+					"serviceMapUseNativeHistograms": false,
+					"tableType": "traces"
+				}
+			],
+			"title": "Traces",
+			"type": "table"
+		},
+		{
+			"datasource": {
+				"type": "loki",
+				"uid": "Loki"
+			},
+			"description": "Logs related to the specified user",
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 9,
+				"w": 24,
+				"x": 0,
+				"y": 8
+			},
+			"id": 2,
+			"options": {
+				"dedupStrategy": "none",
+				"enableInfiniteScrolling": false,
+				"enableLogDetails": true,
+				"showControls": false,
+				"showTime": false,
+				"sortOrder": "Descending",
+				"wrapLogMessage": false
+			},
+			"pluginVersion": "12.3.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "loki",
+						"uid": "Loki"
+					},
+					"direction": "backward",
+					"editorMode": "code",
+					"expr": "{namespace=\"dice-app\"} |= \"$username\"",
+					"queryType": "range",
+					"refId": "A"
+				}
+			],
+			"title": "Logs",
+			"type": "logs"
+		}
+	],
+	"preload": false,
+	"schemaVersion": 42,
+	"tags": [],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"text": "Flavio",
+					"value": "Flavio"
+				},
+				"description": "",
+				"label": "Username",
+				"name": "username",
+				"options": [
+					{
+						"selected": true,
+						"text": "Flavio",
+						"value": "Flavio"
+					}
+				],
+				"query": "Flavio",
+				"type": "textbox"
+			}
+		]
+	},
+	"time": {
+		"from": "now-3h",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "browser",
+	"title": "User Diagnostics Dashboard",
+	"uid": "adx6pcz",
+	"version": 8
+}
