@@ -27,6 +27,26 @@ ingester:
 metricsGenerator:
   enabled: true
   replicas: 1
+  config:
+    registry:
+      collection_interval: 15s
+    processor:
+      span_metrics:
+        dimensions: [] # Add custom dimensions here if needed
+      service_graphs:
+        dimensions: [] # Add custom dimensions here if needed
+  storage:
+    remote_write_add_org_id_header: false
+    remote_write:
+      - url: http://prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+        send_exemplars: true
+
+# Actually generate metrics!
+overrides:
+  # metrics_generator_processors: ["local-blocks"]
+  defaults:
+    metrics_generator:
+      processors: [local-blocks, service-graphs, span-metrics]
 
 distributor:
   replicas: 1
