@@ -5,17 +5,16 @@ set -exu
 docker build -t dice-app .
 CONTEXT=$(kubectl config current-context 2>/dev/null || true)
 if [[ "$CONTEXT" == *"kind"* ]]; then
-  echo "📥 Loading image into kind cluster..."
-  kind load docker-image dice-app:latest
+	echo "📥 Loading image into kind cluster..."
+	kind load docker-image dice-app:latest
 elif [[ "$CONTEXT" == *"k3d"* ]]; then
-  echo "📥 Loading image into k3d cluster..."
-  K3D_CLUSTER="${CONTEXT#k3d-}"
-  k3d image import dice-app:latest -c "$K3D_CLUSTER"
+	echo "📥 Loading image into k3d cluster..."
+	K3D_CLUSTER="${CONTEXT#k3d-}"
+	k3d image import dice-app:latest -c "$K3D_CLUSTER"
 elif command -v minikube &>/dev/null && [[ "$CONTEXT" == *"minikube"* ]]; then
-  echo "📥 Loading image into minikube..."
-  minikube image load dice-app:latest
+	echo "📥 Loading image into minikube..."
+	minikube image load dice-app:latest
 fi
 
-
-kubectl -n dice-app delete -f kubernetes
+kubectl -n dice-app delete -f kubernetes || echo "Can't delete deployments! Continuing..."
 kubectl apply -f ./kubernetes/
