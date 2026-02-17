@@ -7,6 +7,7 @@ import (
 
 	"go.opentelemetry.io/contrib/bridges/otelslog"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type Middleware func(http.Handler) http.Handler
@@ -80,17 +81,12 @@ func RequireAuth(next http.Handler) http.Handler {
 
 func TelemetryMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ctx, span := tracer.Start(r.Context(), r.URL.Path)
+		ctx, span := tracer.Start(r.Context(), r.URL.Path, trace.WithAttributes(attribute.String("path", r.URL.Path), attribute.String("method", r.Method), attribute.String("user_agent", r.UserAgent()), attribute.String("referer", r.Referer()), attribute.String("remote_addr", r.RemoteAddr)))
 		defer span.End()
-		r = r.WithContext(ctx) 
+		r = r.WithContext(ctx)
 
 		startTime := time.Now()
 		next.ServeHTTP(w, r)
-		span.SetAttributes(attribute.String("method", r.Method))
-		span.SetAttributes(attribute.String("path", r.URL.Path))
-		span.SetAttributes(attribute.String("user_agent", r.UserAgent()))
-		span.SetAttributes(attribute.String("referer", r.Referer()))
-		span.SetAttributes(attribute.String("remote_addr", r.RemoteAddr))
 		span.SetAttributes(attribute.String("duration", time.Since(startTime).String()))
 	})
 }
