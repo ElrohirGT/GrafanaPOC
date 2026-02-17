@@ -34,7 +34,7 @@ func artists(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := database.QueryContext(ctx, "SELECT ArtistId, Name FROM artists LIMIT 10")
+	rows, err := database.QueryContext(ctx, "SELECT ArtistId, Name FROM artists LIMIT 100")
 	if err != nil {
 		logger.ErrorContext(ctx, "Query artists failed", "error", err)
 		span.RecordError(err)
@@ -71,4 +71,3 @@ func artists(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	_, _ = w.Write(data)
 }
-

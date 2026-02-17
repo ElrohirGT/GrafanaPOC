@@ -80,12 +80,12 @@ func RequireAuth(next http.Handler) http.Handler {
 
 func TelemetryMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, span := tracer.Start(r.Context(), r.URL.Path)
+		ctx, span := tracer.Start(r.Context(), r.URL.Path)
 		defer span.End()
+		r = r.WithContext(ctx) 
 
 		startTime := time.Now()
 		next.ServeHTTP(w, r)
-
 		span.SetAttributes(attribute.String("method", r.Method))
 		span.SetAttributes(attribute.String("path", r.URL.Path))
 		span.SetAttributes(attribute.String("user_agent", r.UserAgent()))

@@ -16,4 +16,6 @@ elif command -v minikube &>/dev/null && [[ "$CONTEXT" == *"minikube"* ]]; then
   minikube image load dice-app:latest
 fi
 
+
+kubectl -n dice-app delete -f kubernetes
 kubectl apply -f ./kubernetes/
