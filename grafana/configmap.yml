@@ -16,7 +16,7 @@ data:
         url: http://pyroscope.monitoring.svc.cluster.local:4040
       - name: Prometheus
         type: prometheus
-        url: http://prometheus.monitoring:8080
+        url: http://prometheus.monitoring:9090
       - name: Loki
         type: loki
         uid: Loki
