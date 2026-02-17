@@ -30,11 +30,19 @@ metricsGenerator:
   config:
     registry:
       collection_interval: 15s
-    processor:
-      span_metrics:
-        dimensions: [] # Add custom dimensions here if needed
-      service_graphs:
-        dimensions: [] # Add custom dimensions here if needed
+    # processor:
+    #   span_metrics:
+    #     dimensions:
+    #       - span-metrics-latency
+    #       - span-metrics-count
+    #       - span-metrics-size
+    #   service_graphs:
+    #     dimensions:
+    #       - traces_service_graph_request_total
+    #       - traces_service_graph_request_failed_total
+    #       - traces_service_graph_request_server_seconds
+    #       - traces_service_graph_request_client_seconds
+    #       - traces_service_graph_request_messaging_system_seconds
   storage:
     remote_write_add_org_id_header: false
     remote_write:
@@ -43,10 +51,12 @@ metricsGenerator:
 
 # Actually generate metrics!
 overrides:
-  # metrics_generator_processors: ["local-blocks"]
   defaults:
     metrics_generator:
-      processors: [local-blocks, service-graphs, span-metrics]
+      processors:
+        - local-blocks
+        - service-graphs
+        - span-metrics
 
 distributor:
   replicas: 1
