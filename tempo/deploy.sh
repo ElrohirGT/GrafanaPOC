@@ -3,4 +3,4 @@
 set -exu
 
 helm repo add grafana-community https://grafana-community.github.io/helm-charts
-helm upgrade --install tempo grafana-community/tempo-distributed -n monitoring --values ./values.yml --wait
+helm upgrade --install tempo grafana-community/tempo-distributed -n monitoring --values ./values.yml

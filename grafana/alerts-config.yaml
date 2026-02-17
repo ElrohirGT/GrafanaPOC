@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+data:
+  custom_diagnostic.json: |-
+    apiVersion: 1
+    groups:
+      - orgId: 1
+        name: Every60s
+        folder: Alerts
+        interval: 1m
+        rules:
+          - uid: afdjt1hwtyygwb
+            title: DiceRoll Errors
+            condition: C
+            data:
+              - refId: A
+                queryType: instant
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: Loki
+                model:
+                  editorMode: code
+                  expr: count_over_time({service_name="dice"} |= "Failed"[5m])
+                  instant: true
+                  intervalMs: 1000
+                  maxDataPoints: 43200
+                  queryType: instant
+                  refId: A
+              - refId: C
+                datasourceUid: __expr__
+                model:
+                  conditions:
+                      - evaluator:
+                          params:
+                              - 0
+                          type: gt
+                        operator:
+                          type: and
+                        query:
+                          params:
+                              - C
+                        reducer:
+                          params: []
+                          type: last
+                        type: query
+                  datasource:
+                      type: __expr__
+                      uid: __expr__
+                  expression: A
+                  intervalMs: 1000
+                  maxDataPoints: 43200
+                  refId: C
+                  type: threshold
+            noDataState: NoData
+            execErrState: Error
+            annotations: {}
+            labels: {}
+            isPaused: false
+            notification_settings:
+              receiver: grafana-default-email
+
+kind: ConfigMap
+metadata:
+  name: grafana-alerts-conf
+  namespace: monitoring

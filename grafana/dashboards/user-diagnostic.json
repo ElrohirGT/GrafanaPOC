@@ -18,9 +18,44 @@
 	"editable": true,
 	"fiscalYearStartMonth": 0,
 	"graphTooltip": 0,
-	"id": 0,
+	"id": 2,
 	"links": [],
 	"panels": [
+		{
+			"fieldConfig": {
+				"defaults": {},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 7,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 4,
+			"options": {
+				"alertInstanceLabelFilter": "",
+				"alertName": "Dice",
+				"dashboardAlerts": false,
+				"groupBy": [],
+				"groupMode": "default",
+				"maxItems": 20,
+				"showInactiveAlerts": false,
+				"sortOrder": 1,
+				"stateFilter": {
+					"error": true,
+					"firing": true,
+					"noData": false,
+					"normal": false,
+					"pending": true,
+					"recovering": true
+				},
+				"viewMode": "list"
+			},
+			"pluginVersion": "12.3.3",
+			"title": "Alerts",
+			"type": "alertlist"
+		},
 		{
 			"datasource": {
 				"type": "prometheus",
@@ -87,7 +122,7 @@
 				"h": 8,
 				"w": 12,
 				"x": 0,
-				"y": 0
+				"y": 7
 			},
 			"id": 1,
 			"options": {
@@ -162,7 +197,7 @@
 				"h": 8,
 				"w": 12,
 				"x": 12,
-				"y": 0
+				"y": 7
 			},
 			"id": 3,
 			"options": {
@@ -213,7 +248,7 @@
 				"h": 9,
 				"w": 24,
 				"x": 0,
-				"y": 8
+				"y": 15
 			},
 			"id": 2,
 			"options": {
@@ -276,5 +311,5 @@
 	"timezone": "browser",
 	"title": "User Diagnostics Dashboard",
 	"uid": "adx6pcz",
-	"version": 8
+	"version": 1
 }
