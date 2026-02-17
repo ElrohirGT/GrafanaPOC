@@ -3,7 +3,7 @@
 set -exu
 
 helm repo add minio https://charts.min.io/
-helm install minio --namespace monitoring minio/minio --values ./values.yml
+helm upgrade --install minio --namespace monitoring minio/minio --values ./values.yml --wait
 
 brew install minio/stable/mc || echo "Installing the MinIO client..."
 sleep 3s
