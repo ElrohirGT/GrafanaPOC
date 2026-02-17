@@ -81,7 +81,13 @@ spec:
               name: grafana-config-volume
             - mountPath: /etc/grafana/provisioning/dashboards/
               name: grafana-dashboards-volume
+            - mountPath: /etc/grafana/provisioning/alerting/
+              name: grafana-alerts-volume
       volumes:
+        - name: grafana-alerts-volume
+          configMap:
+            defaultMode: 420
+            name: grafana-alerts-conf
         - name: grafana-dashboards-volume
           configMap:
             defaultMode: 420
