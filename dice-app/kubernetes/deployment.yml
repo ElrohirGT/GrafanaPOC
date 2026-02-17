@@ -7,15 +7,15 @@ metadata:
   labels:
     app: dice
   annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port: '9100'
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9100"
 
-    profiles.grafana.com/cpu.scrape: 'true'
-    profiles.grafana.com/cpu.port: '8080'
-    profiles.grafana.com/memory.scrape: 'true'
-    profiles.grafana.com/memory.port: '8080'
-    profiles.grafana.com/goroutine.scrape: 'true'
-    profiles.grafana.com/goroutine.port: '8080'
+    profiles.grafana.com/cpu.scrape: "true"
+    profiles.grafana.com/cpu.port: "8080"
+    profiles.grafana.com/memory.scrape: "true"
+    profiles.grafana.com/memory.port: "8080"
+    profiles.grafana.com/goroutine.scrape: "true"
+    profiles.grafana.com/goroutine.port: "8080"
 spec:
   replicas: 1
   selector:
@@ -29,8 +29,8 @@ spec:
     spec:
       containers:
         - name: dice
-          image: 'fagdtw/dice-app'
-          imagePullPolicy: Always
+          image: "dice-app:latest"
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
@@ -48,6 +48,10 @@ spec:
             #   value: http://grafana-alloy.monitoring:12345/v1/metrics
             - name: OTEL_RESOURCE_ATTRIBUTES
               value: service.name=dice,service.version=0.1.0
+            - name: REDIS_ADDR
+              value: redis.dice-app.svc.cluster.local:6379
+            - name: SQLITE_DB_PATH
+              value: /data/chinook.db
           resources:
             limits:
               memory: "75Mi"

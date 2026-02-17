@@ -10,6 +10,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY *.go ./
+COPY data/ data/
 
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} CGO_ENABLED=0 go build -o /dice
 
@@ -23,6 +24,7 @@ FROM alpine:3.23 AS build-release-stage
 WORKDIR /
 
 COPY --from=build-stage /dice /dice
+COPY --from=build-stage /app/data /data
 
 EXPOSE 8080
 

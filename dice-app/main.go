@@ -36,6 +36,20 @@ func run() error {
 
 	setupPyroscope()
 
+	if err := initDB(ctx); err != nil {
+		log.Printf("Warning: failed to init DB: %v", err)
+	}
+	defer func() {
+		_ = closeDB(context.Background())
+	}()
+
+	if err := initRedis(ctx); err != nil {
+		log.Printf("Warning: failed to init Redis: %v", err)
+	}
+	defer func() {
+		_ = closeRedis(context.Background())
+	}()
+
 	// Start HTTP server.
 	srv := &http.Server{
 		Addr:         ":8080",
@@ -68,12 +82,17 @@ func run() error {
 func newHTTPHandler() http.Handler {
 	mux := http.NewServeMux()
 
-	// Register handlers.
-	mux.Handle("/rolldice", http.HandlerFunc(rolldice))
-	mux.Handle("/rolldice/{player}", http.HandlerFunc(rolldice))
+	handlerPublic := Chain(publicMiddlewares...)
+	mux.Handle("/login", handlerPublic(http.HandlerFunc(login)))
+	mux.Handle("/rolldice", handlerPublic(http.HandlerFunc(rolldice)))
+	mux.Handle("/rolldice/{player}", handlerPublic(http.HandlerFunc(rolldice)))
+	mux.Handle("/artists", handlerPublic(http.HandlerFunc(artists)))
+	mux.Handle("/invoices/summary", handlerPublic(http.HandlerFunc(invoicesSummary)))
 
-	mux.Handle("/heavy", http.HandlerFunc(heavy))
-	mux.Handle("/heavy/{player}", http.HandlerFunc(heavy))
+	handlerProtected := Chain(protectedMiddlewares...)
+	mux.Handle("/heavy", handlerProtected(http.HandlerFunc(heavy)))
+	mux.Handle("/heavy/{player}", handlerProtected(http.HandlerFunc(heavy)))
+	mux.Handle("/stats", handlerProtected(http.HandlerFunc(stats)))
 
 	// Add HTTP instrumentation for the whole server.
 	handler := otelhttp.NewHandler(mux, "/")

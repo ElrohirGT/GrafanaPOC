@@ -16,15 +16,15 @@ deployDir ./prometheus/
 deployDir ./node-exporter/
 
 # Deploy in order, wait for previous to complete before passing on to the next:
-
-sleep 20s
+helm repo update
+#sleep 20s
 deployDir ./minio/
 deployDir ./alloy
-sleep 20s
+
 deployDir ./loki
-sleep 20s
+
 deployDir ./tempo/
-sleep 20s
+
 deployDir ./pyroscope/
 sleep 20s
 deployDir ./dice-app/

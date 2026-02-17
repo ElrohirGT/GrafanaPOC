@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -34,18 +35,26 @@ func init() {
 	}
 }
 
+const rolldiceCacheTTL = 30 * time.Second
+
 func rolldice(w http.ResponseWriter, r *http.Request) {
 	ctx, span := tracer.Start(r.Context(), "roll")
 	defer span.End()
-
-	roll := 1 + rand.Intn(6)
-	rollValueAttr := attribute.Int("roll.value", roll)
 
 	playerName := r.PathValue("player")
 	if playerName == "" {
 		playerName = "Anonymous"
 	}
+	cacheKey := "rolldice:last:" + playerName
+
+	roll := 1 + rand.Intn(6)
+	rollValueAttr := attribute.Int("roll.value", roll)
 	userAttr := attribute.String("user.name", playerName)
+
+	// Cache roll in Redis
+	if client := getRedis(); client != nil {
+		_ = client.Set(ctx, cacheKey, roll, rolldiceCacheTTL).Err()
+	}
 	msg := playerName + " is rolling the dice"
 	logger.InfoContext(ctx, msg, "result", roll)
 
