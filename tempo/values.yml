@@ -55,8 +55,8 @@ overrides:
     metrics_generator:
       processors:
         - local-blocks
-        - service-graphs
-        - span-metrics
+        # - service-graphs
+        # - span-metrics
 
 distributor:
   replicas: 1
